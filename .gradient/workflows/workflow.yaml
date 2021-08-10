@@ -36,4 +36,3 @@ jobs:
         type: dataset
         with:
           ref: test-model
-
