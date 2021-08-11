@@ -23,7 +23,6 @@ from absl import app as absl_app
 from absl import flags
 import tensorflow as tf  # pylint: disable=g-bad-import-order
 
-
 gradient_sdk = True
 try:
     from gradient_sdk import get_tf_config
