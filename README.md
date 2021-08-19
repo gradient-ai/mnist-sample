@@ -7,7 +7,7 @@ dataset](http://yann.lecun.com/exdb/mnist/) using the
 [tf.data](https://www.tensorflow.org/api_docs/python/tf/data),
 [tf.estimator.Estimator](https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator),
 and
-[tf.layers](https://www.tensorflow.org/api_docs/python/tf/layers)
+[tf.layers](https://www.tensorflow.org/versions/r1.15/api_docs/python/tf)
 APIs.
 
 # Gradient Setup
