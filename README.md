@@ -22,68 +22,34 @@ pip install -U gradient
 
 [Please check our documentation on how to install Gradient CLI and obtain a Token](https://docs.paperspace.com/gradient/get-started/install-the-cli)
 
-### Create project and get project id
+### Create project and get the project id
 
 [Please check our documentation on how to create a project and get the project id](https://docs.paperspace.com/gradient/projects/create-a-project)
+Your project ID will look like `pr1234567`.
 
-### Create and start single node experiment
+### Create and start a workflow
 
 ```
-gradient experiments run singlenode \
-  --name mnist \
-  --projectId <your-project-id> \
-  --experimentEnv "{\"EPOCHS_EVAL\":5,\"TRAIN_EPOCHS\":10,\"MAX_STEPS\":1000,\"EVAL_SECS\":10}" \
-  --container tensorflow/tensorflow:1.13.1-gpu-py3 \
-  --machineType K80 \
-  --command "python mnist.py" \
-  --workspace https://github.com/Paperspace/mnist-sample.git
+gradient workflows create --name mnist-sample --projectId pr1234567
++--------------+--------------------------------------+
+| Name         | ID                                   |
++--------------+--------------------------------------+
+| mnist-sample | 12345678-1234-1234-1234-1234567890ab |
++--------------+--------------------------------------+
+
+```
+
+Clone this repo, and change directoru into it, or copy [mnist-sample.yaml](mnist-sample.yaml) to your local machine.
+
+Then run the workflow using the workflow ID from the create workflow command above.
+
+```
+gradient workflows run --id 12345678-1234-1234-1234-1234567890ab --path mnist-sample.yaml
 ```
 
 That's it!
 
-## Multinode Training on Gradient
-
-### Create and start distributed multinode experiment
-
-```
-gradient experiments run multinode \
-  --name mnist-multinode \
-  --projectId <your-project-id> \
-  --experimentEnv "{\"EPOCHS_EVAL\":5,\"TRAIN_EPOCHS\":10,\"MAX_STEPS\":1000,\"EVAL_SECS\":10}" \
-  --experimentType GRPC \
-  --workerContainer tensorflow/tensorflow:1.13.1-gpu-py3 \
-  --workerMachineType K80 \
-  --workerCommand 'pip install -r requirements.txt && python mnist.py' \
-  --workerCount 2 \
-  --parameterServerContainer tensorflow/tensorflow:1.13.1-py3 --parameterServerMachineType K80 \
-  --parameterServerCommand 'pip install -r requirements.txt && python mnist.py' \
-  --parameterServerCount 1 --workspace https://github.com/Paperspace/mnist-sample.git
-```
-
-### Modify your code to run distributed on Gradient
-
-You can run the original Google mnist-sample code on Paperspace with minimal changes by simply setting TF_CONFIG and model_dir as follows.
-
-#### Set `TF_CONFIG` environment variable
-
-First import from gradient-sdk:
-
-```
-from gradient_sdk import get_tf_config
-```
-
-then in your main():
-
-```
-if __name__ == '__main__':
-    get_tf_config()
-```
-
-This function will set `TF_CONFIG`, `INDEX` and `TYPE` for each node.
-
-For multi-worker training, as mentioned before, you need to set the `TF_CONFIG` environment variable for each binary running in your cluster. The `TF_CONFIG` environment variable is a JSON string that specifies the tasks that constitute a cluster, each task's address, and each task's role in the cluster.
-
-### Exporting a Model for deployments
+### Exporting a Model for inference
 
 #### Export your Tensorflow model
 
@@ -187,22 +153,6 @@ python mnist.py --export_dir /tmp/mnist_saved_model
 
 If no export directory is specified, the model is saved to a timestamped directory under `./models` subdirectory (e.g. `mnist-sample/models/1513630966/`).
 
-## Testing a Tensorflow Serving-deployed model on Paperspace
-
-To test the prediction endpoint of a model deployed with Tensorflow Serving on Paperspace, run the following commands, replacing `your-deployment-id` with your deployment's id:
-
-```
-python serving_rest_client_test.py --url https://services.paperspace.io/model-serving/your-deployment-id:predict
-```
-
-Optionally you can provide a path to an image file to run a prediction on, for example:
-
-```
-python serving_rest_client_test.py --url https://services.paperspace.io/model-serving/your-deployment-id:predict --path example5.png
-```
-
-_Note: it may be useful to run this test from within a virtual environment to guard against issues in your local environment. To do so, use the instructions above._
-
 ## Testing a Tensorflow Serving-deployed model on your local machine using Docker
 
 Open another terminal window and run the following in the directory where you cloned this repo:
@@ -243,10 +193,3 @@ The SavedModel will be saved in a timestamped directory under `models` subdirect
 ## Inspecting and getting predictions with the SavedModel file
 
 You can also use the [`saved_model_cli`](https://www.tensorflow.org/guide/saved_model#cli_to_inspect_and_execute_savedmodel) tool to inspect and execute the SavedModel.
-
-### Running TensorBoards
-
-Just type (change name mnist to your model name if you have other name):
-```
-tensorboard --logdir models/mnist 
-```
