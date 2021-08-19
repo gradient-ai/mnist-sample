@@ -24,7 +24,7 @@ pip install -U gradient
 
 ### Create project and get the project id
 
-[Please check our documentation on how to create a project and get the project id](https://docs.paperspace.com/gradient/projects/create-a-project)
+[Please check our documentation on how to create a project and get the project id](https://docs.paperspace.com/gradient/get-started/managing-projects)
 Your project ID will look like `pr1234567`.
 
 ### Create and start a workflow
