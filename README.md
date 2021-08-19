@@ -20,7 +20,7 @@ APIs.
 pip install -U gradient
 ```
 
-[Please check our documentation on how to install Gradient CLI and obtain a Token](https://docs.paperspace.com/gradient/get-started/install-the-cli)
+[Please check our documentation on how to install Gradient CLI and obtain an API Key](https://docs.paperspace.com/gradient/get-started/install-the-cli)
 
 ### Create project and get the project id
 
