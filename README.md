@@ -115,7 +115,7 @@ To train a the mnist model locally:
 
 1. Make sure you have the latest version of TensorFlow installed.
 
-2. Also make sure you've [added the models folder to your Python path](/official/#running-the-models); otherwise you may encounter an error like `ImportError: No module named mnist`.
+2. Also make sure you've [added the models folder to your Python path](https://github.com/mlcommons/training/blob/master/image_classification/tensorflow/official/README.md#running-the-models); otherwise you may encounter an error like `ImportError: No module named mnist`.
 
 3. Download the code from GitHub:
 
